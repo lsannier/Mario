@@ -16,48 +16,51 @@
 
                     <br>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full mt-4 border-collapse bg-white dark:bg-gray-800 shadow-sm">
-                            <thead>
-                                <tr class="bg-gradient-to-r from-[#ff2d20] to-[#ff6b5d] text-white">
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">ID</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">Titre</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">Description</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">Année de sortie</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">Durée de location</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">Tarif de location</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 text-left">Évaluation</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                @php
-                                    $currentPage = request()->get('page', 1);
-                                    $perPage = 10;
-                                    $response = file_get_contents('http://localhost:8080/toad/film/all');
-                                    $films = json_decode($response);
-                                    $totalFilms = count($films);
-                                    $totalPages = ceil($totalFilms / $perPage);
-                                    $films = array_slice($films, ($currentPage - 1) * $perPage, $perPage);
-                                @endphp
-                                @if(isset($films) && count($films) > 0)
-                                    @foreach ($films as $film)
-                                        <tr class="hover:bg-[#fff5f5] dark:hover:bg-gray-700 transition duration-150 ease-in-out">
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $film->filmId }}</td>
-                                            <td class="px-6 py-4 font-medium text-[#ff2d20] dark:text-[#ff2d20]">{{ $film->title }}</td>
-                                            <td class="px-6 py-4">{{ $film->description }}</td>
-                                            <td class="px-6 py-4">{{ $film->releaseYear }}</td>
-                                            <td class="px-6 py-4">{{ $film->rentalDuration }}</td>
-                                            <td class="px-6 py-4">{{ $film->rentalRate }}</td>
-                                            <td class="px-6 py-4">{{ $film->rating }}</td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">Aucun film disponible</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                    <div class="overflow-x-auto mx-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style="margin: 20px;">
+                            @php
+                                $currentPage = request()->get('page', 1);
+                                $perPage = 9; // Changé à 9 pour un meilleur affichage en grille
+                                $response = file_get_contents('http://localhost:8080/toad/film/all');
+                                $films = json_decode($response);
+                                $totalFilms = count($films);
+                                $totalPages = ceil($totalFilms / $perPage);
+                                $films = array_slice($films, ($currentPage - 1) * $perPage, $perPage);
+                            @endphp
+                            @if(isset($films) && count($films) > 0)
+                                @foreach ($films as $film)
+                                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold text-[#ff2d20] dark:text-[#ff2d20] mb-2">{{ $film->title }}</h3>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">ID: {{ $film->filmId }}</div>
+                                            <p class="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">{{ $film->description }}</p>
+                                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                                <div>
+                                                    <span class="font-semibold">Année:</span>
+                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->releaseYear }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="font-semibold">Durée location:</span>
+                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->rentalDuration }} jours</span>
+                                                </div>
+                                                <div>
+                                                    <span class="font-semibold">Tarif:</span>
+                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->rentalRate }}€</span>
+                                                </div>
+                                                <div>
+                                                    <span class="font-semibold">Évaluation:</span>
+                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->rating }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="col-span-3 text-center text-gray-500 dark:text-gray-400 py-8">
+                                    Aucun film disponible
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="mt-6 flex justify-center">
                         <nav class="relative z-0 inline-flex shadow-sm rounded-md">
