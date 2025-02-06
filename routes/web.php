@@ -15,9 +15,17 @@ Route::get('/filmlist', function () {
     return view('filmlist');
 })->middleware(['auth', 'verified'])->name('filmlist');
 
-Route::get('/filmdetail', function () {
-    return view('filmdetail');
-})->middleware(['auth', 'verified'])->name('filmdetail');
+Route::get('/inventory', function () {
+    return view('inventory');
+})->middleware(['auth', 'verified'])->name('inventory');
+
+Route::get('/director', function () {
+    return view('director');
+})->middleware(['auth', 'verified'])->name('director');
+
+Route::get('/filmDetails', function () {
+    return view('filmDetails');
+})->middleware(['auth', 'verified'])->name('filmDetails');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

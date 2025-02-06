@@ -29,27 +29,29 @@
                             @endphp
                             @if(isset($films) && count($films) > 0)
                                 @foreach ($films as $film)
-                                    <a href="{{ url('/filmdetail?id=' . $film->filmId) }}" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer">
-                                        <div class="p-6">
-                                            <h3 class="text-xl font-bold text-[#ff2d20] dark:text-[#ff2d20] mb-2">{{ $film->title }}</h3>
-                                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">ID: {{ $film->filmId }}</div>
-                                            <p class="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">{{ $film->description }}</p>
-                                            <div class="grid grid-cols-2 gap-4 text-sm">
-                                                <div>
-                                                    <span class="font-semibold">Année:</span>
-                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->releaseYear }}</span>
-                                                </div>
-                                                <div>
-                                                    <span class="font-semibold">Durée location:</span>
-                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->rentalDuration }} jours</span>
-                                                </div>
-                                                <div>
-                                                    <span class="font-semibold">Tarif:</span>
-                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->rentalRate }}€</span>
-                                                </div>
-                                                <div>
-                                                    <span class="font-semibold">Évaluation:</span>
-                                                    <span class="text-gray-600 dark:text-gray-400">{{ $film->rating }}</span>
+                                    <a href="/filmDetails?id={{ $film->filmId }}">
+                                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+                                            <div class="p-6">
+                                                <h3 class="text-xl font-bold text-[#ff2d20] dark:text-[#ff2d20] mb-2">{{ $film->title }}</h3>
+                                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">ID: {{ $film->filmId }}</div>
+                                                <p class="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">{{ $film->description }}</p>
+                                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                                    <div>
+                                                        <span class="font-semibold">Année:</span>
+                                                        <span class="text-gray-600 dark:text-gray-400">{{ $film->releaseYear }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="font-semibold">Durée location:</span>
+                                                        <span class="text-gray-600 dark:text-gray-400">{{ $film->rentalDuration }} jours</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="font-semibold">Tarif:</span>
+                                                        <span class="text-gray-600 dark:text-gray-400">{{ $film->rentalRate }}€</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="font-semibold">Évaluation:</span>
+                                                        <span class="text-gray-600 dark:text-gray-400">{{ $film->rating }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
