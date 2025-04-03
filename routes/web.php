@@ -3,11 +3,15 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
-use App\Models\Film;
+use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Http;
 
 Route::get('/', function () {
-    return view('welcome');
+    // dd("hello world")   ;
+    return view('login_staff');
 });
+
+Route::post('/login_staff', [ApiController::class, 'login'])->name('login_staff');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
