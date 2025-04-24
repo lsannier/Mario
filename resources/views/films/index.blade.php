@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-center">
+        <h2 class="text-2xl font-bold text-black text-center">
             {{ __('Liste des DVDs') }}
         </h2>
     </x-slot>
