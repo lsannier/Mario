@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-center">
+        <h2 class="font-semibold text-xl text-black leading-tight text-center">
             {{ __('Stock DVD') }}
         </h2>
     </x-slot>
@@ -51,7 +51,7 @@
 
             rows.forEach(row => {
                 const title = row.querySelector("td:first-child").textContent.toLowerCase();
-                
+
                 if (title.includes(searchValue)) {
                     row.style.display = "";
                 } else {

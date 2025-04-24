@@ -18,14 +18,12 @@
                             {{ __('Gestion des stocks') }}
                         </x-nav-link>
                     </div>
-                </div>
-            </div>
-            <div class="flex items-center">
-                <li><a href="/director">Réalisateurs</a></li>
-                <form action="{{ route('deconnexion') }}" method="POST">
-                    @csrf
-                    <a href="javascript:void(0)" onclick="event.preventDefault(); this.closest('form').submit();">Déconnexion</a>
-                </form>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <form action="{{ route('deconnexion') }}" method="POST">
+                            @csrf
+                            <x-nav-link href="javascript:void(0)" onclick="event.preventDefault(); this.closest('form').submit();" style="color:white">Déconnexion</x-nav-link>
+                        </form>
+                    </div>
             </div>
             <!-- <li><a href="#">Suivi des locations</a></li> -->
             <!-- <li><a href="#">Déconnexion</a></li> -->

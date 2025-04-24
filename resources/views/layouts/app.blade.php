@@ -200,9 +200,9 @@
             <main>
                 {{ $slot }}
             </main>
-                <!-- <footer>
+                <footer>
                     <p>&copy; 2024 RFTG - Village Vacances Rétro</p>
-                </footer> -->
+                </footer>
 
             </nav>
         <!-- </div> -->

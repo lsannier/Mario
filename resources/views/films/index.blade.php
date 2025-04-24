@@ -53,16 +53,17 @@
                                     </li>
                                 </ul>
                             </div>
-
+                            <div style="display:flex;flex-direction:row; gap:10px">
                             <!-- Numéro du film -->
-                            <div class="film-number">{{ $index + 1 }}</div>
+                                <div class="film-number">{{ $index + 1 }}</div>
 
-                            <!-- Titre du film -->
-                            <div class="film-title">
-                                <strong>Titre :</strong>
-                                <a href="{{ route('detail', ['filmId' => $film['filmId']]) }}" class="film-link">
-                                    {{ $film['title'] ?? 'Titre inconnu' }}
-                                </a>
+                                <!-- Titre du film -->
+                                <div class="film-title">
+                                    <strong>Titre :</strong>
+                                    <a href="{{ route('detail', ['filmId' => $film['filmId']]) }}" class="film-link">
+                                        {{ $film['title'] ?? 'Titre inconnu' }}
+                                    </a>
+                                </div>
                             </div>
                         </li>
                     @endforeach
@@ -141,8 +142,8 @@
         .film-number {
             width: 2.5rem;
             height: 2.5rem;
-            background: black;
-            color: white;
+            /* background: black; */
+            color: black;
             border-radius: 50%;
             display: flex;
             align-items: center;
