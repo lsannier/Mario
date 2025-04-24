@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white">
     <!-- Primary Navigation Menu -->
     <header>
         <h1>Mario - Gestion des DVD</h1>
