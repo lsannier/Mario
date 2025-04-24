@@ -203,7 +203,7 @@
                 <!-- <footer>
                     <p>&copy; 2024 RFTG - Village Vacances Rétro</p>
                 </footer> -->
-                
+
             </nav>
         </div>
     </body>

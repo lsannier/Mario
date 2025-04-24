@@ -7,13 +7,22 @@
     <nav>
         <ul class="flex items-center" id="nav-links">
             <div class="flex items-center">
-                <li><a href="/dashboard">Accueil</a></li>
-                <li><a href="/inventory">Inventaire</a></li>
-                <li><a href="/filmlist">Films</a></li>
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('films.index')" :active="request()->routeIs('films')" style="color:white">
+                            {{ __('Films') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('stocks')" :active="request()->routeIs('stocks')" style="color:white">
+                            {{ __('Gestion des stocks') }}
+                        </x-nav-link>
+                    </div>
+                </div>
             </div>
             <div class="flex items-center">
                 <li><a href="/director">Réalisateurs</a></li>
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('deconnexion') }}" method="POST">
                     @csrf
                     <a href="javascript:void(0)" onclick="event.preventDefault(); this.closest('form').submit();">Déconnexion</a>
                 </form>
