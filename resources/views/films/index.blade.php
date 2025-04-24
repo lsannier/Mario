@@ -58,8 +58,8 @@
                                 <div class="film-number">{{ $index + 1 }}</div>
 
                                 <!-- Titre du film -->
-                                <div class="film-title">
-                                    <strong>Titre :</strong>
+                                <div class="film-title" style="width: 60%;">
+                                    <strong>Titre :</strong><br>
                                     <a href="{{ route('detail', ['filmId' => $film['filmId']]) }}" class="film-link">
                                         {{ $film['title'] ?? 'Titre inconnu' }}
                                     </a>
