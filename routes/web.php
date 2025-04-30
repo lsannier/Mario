@@ -23,6 +23,7 @@ Route::post('/deconnexion', function(){
 
     Route::get('/stocks', [ApiController::class, 'getStock'])->name('stocks');
 
+Route::get('/admin/customer-rentals', [ApiController::class, 'customerRentals'])->name('admin.customer-rentals');
 
 Route::get('/detail', function () {
     return view('detail');

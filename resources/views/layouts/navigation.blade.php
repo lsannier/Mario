@@ -24,6 +24,11 @@
                             <x-nav-link href="javascript:void(0)" onclick="event.preventDefault(); this.closest('form').submit();" style="color:white">Déconnexion</x-nav-link>
                         </form>
                     </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <a href="{{ route('admin.customer-rentals') }}" class="[your-navigation-classes]">
+                            Locations des clients
+                        </a>
+                    </div>
             </div>
             <!-- <li><a href="#">Suivi des locations</a></li> -->
             <!-- <li><a href="#">Déconnexion</a></li> -->

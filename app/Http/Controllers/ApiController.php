@@ -14,23 +14,23 @@ class ApiController extends Controller
         $port = env('PORT');
         $serveur = env('SERVEUR');
         $apiUrl = "http://".$serveur.$port."/toad/film/all";
-        
+
         try {
             $response = file_get_contents($apiUrl);
-        
+
             if ($response === false) {
                 throw new Exception("Erreur lors de l'appel de l'API.");
             }
-        
+
             $films = json_decode($response, true);
-            
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Erreur de décodage JSON : " . json_last_error_msg());
             }
 
             // Transmet les données à la vue 'films'
             return view('films.index', compact('films'));
-        
+
         } catch (Exception $e) {
             // En cas d'erreur, retournez un message d'erreur à la vue
             return view('films.index', ['error' => $e->getMessage()]);
@@ -41,30 +41,30 @@ class ApiController extends Controller
     {
         $port = env('PORT');
         $serveur = env('SERVEUR');
-    
+
         $apiUrlStock = "http://".$serveur.$port."/toad/inventory/stockFilm";
         $apiUrlStore = "http://".$serveur.$port."/toad/inventory/getStockByStore";
-    
+
         try {
             // Appels API
             $responseStock = file_get_contents($apiUrlStock);
             $responseStore = file_get_contents($apiUrlStore);
-    
+
             if ($responseStock === false || $responseStore === false) {
                 throw new Exception("Erreur lors de l'appel de l'API.");
             }
-    
+
             // Décodage JSON
             $filmsStock = json_decode($responseStock, true);
             $filmsStore = json_decode($responseStore, true);
-    
+
             if (!is_array($filmsStock) || empty($filmsStock) || !is_array($filmsStore) || empty($filmsStore)) {
                 throw new Exception("Aucun film disponible.");
             }
-    
+
             // Création d'un tableau fusionné
             $films = [];
-    
+
             foreach ($filmsStock as $film) {
                 $titre = trim(strtolower($film['title'] ?? ''));
                 $films[$titre] = [
@@ -73,17 +73,17 @@ class ApiController extends Controller
                     'address' => 'N/A',
                 ];
             }
-    
+
             foreach ($filmsStore as $store) {
                 $titre = trim(strtolower($store['title'] ?? ''));
-    
+
                 if (isset($films[$titre])) {
                     $films[$titre]['address'] = $store['address'] ?? 'Adresse inconnue';
                 }
             }
-    
+
             return view('stocks', ['films' => array_values($films)]);
-    
+
         } catch (Exception $e) {
             return view('stocks', ['error' => $e->getMessage()]);
         }
@@ -95,22 +95,22 @@ class ApiController extends Controller
         $serveur = env('SERVEUR');
 
         $apiUrl = 'http://'.$serveur.$port.'/toad/film/getById?id=' . $id;
-    
+
         try {
             $response = file_get_contents($apiUrl);
-    
+
             if ($response === false) {
                 throw new Exception("Erreur lors de l'appel de l'API pour le film.");
             }
-    
+
             $film = json_decode($response, true);
-    
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Erreur de décodage JSON : " . json_last_error_msg());
             }
-    
+
             return view('films.detail', compact('film'));
-    
+
         } catch (Exception $e) {
             return view('films.detail', ['error' => $e->getMessage()]);
         }
@@ -129,9 +129,9 @@ class ApiController extends Controller
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Erreur de décodage JSON : " . json_last_error_msg());
             }
-            return view('films.edit', compact('film')); 
+            return view('films.edit', compact('film'));
         } catch (Exception $e) {
-            return back()->with('error', $e->getMessage()); 
+            return back()->with('error', $e->getMessage());
         }
     }
 
@@ -139,10 +139,10 @@ class ApiController extends Controller
         $port = env('PORT');
         $serveur = env('SERVEUR');
         $apiUrl = 'http://'.$serveur.$port.'/toad/film/update/' . $id;
-    
+
         try {
             $client = new \GuzzleHttp\Client();
-            
+
             $queryParams = [
                 'query' => [
                     'title' => $request->input('title'),
@@ -159,9 +159,9 @@ class ApiController extends Controller
                     'idDirector' => $film['idDirector'] ?? 1
                 ]
             ];
-    
+
             $response = $client->put($apiUrl, $queryParams);
-    
+
             if ($response->getStatusCode() === 200) {
                 return redirect()->route('films.index')->with('success', 'Film mis à jour avec succès.');
             } else {
@@ -172,7 +172,7 @@ class ApiController extends Controller
             return redirect()->route('films.index')->with('error', 'Erreur: ' . $e->getMessage());
         }
     }
-    
+
     public function create()
 {
     return view('films.create');
@@ -219,7 +219,7 @@ public function store(Request $request)
         ]);
         $statusCode = $response->getStatusCode();
         $body = $response->getBody()->getContents();
-        
+
         Log::info("Réponse API (Status: $statusCode): $body");
 
         if ($response->getStatusCode() === 200) {
@@ -239,22 +239,22 @@ public function store(Request $request)
         $port = env('PORT');
         $serveur = env('SERVEUR');
         $apiUrl = 'http://'.$serveur.$port.'/toad/film/getById?id=' . $id;
-    
+
         try {
             $response = file_get_contents($apiUrl);
-    
+
             if ($response === false) {
                 throw new Exception("Erreur lors de l'appel de l'API pour le film.");
             }
-    
+
             $film = json_decode($response, true);
-    
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Erreur de décodage JSON : " . json_last_error_msg());
             }
-    
+
             return view('films.detail', compact('film'));
-    
+
         } catch (Exception $e) {
             return view('films.detail', ['error' => $e->getMessage()]);
         }
@@ -265,12 +265,12 @@ public function store(Request $request)
         $port = env('PORT');
         $serveur = env('SERVEUR');
         $deleteUrl = 'http://'.$serveur.$port.'/toad/film/delete/' . $id;
-    
+
         try {
             // Suppression du film et de ses données associées (suppression en cascade)
             $client = new \GuzzleHttp\Client();
             $response = $client->delete($deleteUrl);
-    
+
             if ($response->getStatusCode() === 200) {
                 // Si l'API répond par un succès, renvoyer un message de succès
                 return redirect()->route('films.index')->with('success', 'Film et ses données associées supprimés avec succès.');
@@ -283,31 +283,31 @@ public function store(Request $request)
             return redirect()->route('films.index')->with('error', 'Erreur: ' . $e->getMessage());
         }
     }
-    
-    
-    
+
+
+
 
     public function getRentalLivraison($id)
     {
         $port = env('PORT');
         $serveur = env('SERVEUR');
         $apiUrl = 'http://'.$serveur.$port.'/toad/rental/films-en-cours';
-    
+
         try {
             $response = file_get_contents($apiUrl);
-    
+
             if ($response === false) {
                 throw new Exception("Erreur lors de l'appel de l'API pour le film.");
             }
-    
+
             $film = json_decode($response, true);
-    
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Erreur de décodage JSON : " . json_last_error_msg());
             }
-    
+
             return view('livraison', compact('film'));
-    
+
         } catch (Exception $e) {
             return view('livraison', ['error' => $e->getMessage()]);
         }
@@ -318,7 +318,7 @@ public function store(Request $request)
     $port = env('PORT');
     $serveur = env('SERVEUR');
     $apiUrl = 'http://'.$serveur.$port.'/toad/inventory/getById?id=' . $id; // L'URL de l'API pour un stock spécifique
-    
+
     try {
         // Récupérer la réponse JSON du webservice
         $response = file_get_contents($apiUrl);
@@ -338,7 +338,7 @@ public function store(Request $request)
 
         // Transmet les données à la vue 'stock_detail'
         return view('stock_detail', compact('stock'));
-    
+
     } catch (Exception $e) {
         return view('stock', ['error' => $e->getMessage()]);
     }
@@ -349,7 +349,7 @@ public function getStockUpdate($id)
     $port = env('PORT');
     $serveur = env('SERVEUR');
     $apiUrl = 'http://'.$serveur.$port.'/toad/inventory/getById?id=' . $id; // L'URL de l'API pour un stock spécifique
-    
+
     try {
         // Récupérer la réponse JSON du webservice
         $response = file_get_contents($apiUrl);
@@ -369,7 +369,7 @@ public function getStockUpdate($id)
 
         // Transmet les données à la vue 'stock_update' pour mise à jour
         return view('stock_update', compact('stock'));
-    
+
     } catch (Exception $e) {
         // En cas d'erreur, retournez un message d'erreur à la vue
         return view('stock_update', ['error' => $e->getMessage()]);
@@ -381,7 +381,7 @@ public function getAllStocks()
     $port = env('PORT');
     $serveur = env('SERVEUR');
     $apiUrl = 'http://'.$serveur.$port.'/toad/inventory/all'; // L'URL de l'API pour récupérer les stocks
-    
+
     try {
         // Récupérer la réponse JSON du webservice
         $response = file_get_contents($apiUrl);
@@ -401,7 +401,7 @@ public function getAllStocks()
 
         // Transmet les données à la vue 'stocks'
         return view('stocks', compact('stocks'));
-    
+
     } catch (Exception $e) {
         // En cas d'erreur, retournez un message d'erreur à la vue
         return view('stocks', ['error' => $e->getMessage()]);
@@ -412,7 +412,7 @@ public function getStockDelete($id)
     $port = env('PORT');
     $serveur = env('SERVEUR');
     $apiUrl = 'http://'.$serveur.$port.'/toad/inventory/delete/' . $id; // L'URL de l'API pour supprimer un stock spécifique
-    
+
     try {
         // Récupérer la réponse JSON du webservice (ici on s'attend à un status de réussite)
         $response = file_get_contents($apiUrl);
@@ -432,7 +432,7 @@ public function getStockDelete($id)
 
         // Transmet la réussite de la suppression à la vue
         return redirect()->route('stocks.index')->with('success', 'Stock supprimé avec succès');
-    
+
     } catch (Exception $e) {
         // En cas d'erreur, retournez un message d'erreur à la vue
         return redirect()->route('stocks.index')->with('error', $e->getMessage());
@@ -467,7 +467,7 @@ public function login(Request $request)
         }
 
         // Vérification du mot de passe
-        if ($staff['pasword'] !== $password) { 
+        if ($staff['pasword'] !== $password) {
             return back()->with('error', 'Mot de passe incorrect.');
         }
 
@@ -491,10 +491,64 @@ public function login(Request $request)
 
 public function lougout(Request $request)
 {
-   
+
   return redirect()->route('films.index')->with('success', 'Connexion réussie.');
 
 }
 
+public function customerRentals(Request $request)
+{
+    $client = new \GuzzleHttp\Client();
+    $customerId = $request->input('customer_id');
+    $port = env('PORT');
+    $serveur = env('SERVEUR');
+
+    try {
+        $customersResponse = $client->request('GET', "http://{$serveur}{$port}/toad/customer/all");
+        $customers = json_decode($customersResponse->getBody()->getContents(), true);
+    } catch (\Exception $e) {
+        $customers = [];
+    }
+
+    $rentals = [];
+    $films = [];
+
+    if ($customerId) {
+        try {
+            $rentalsResponse = $client->request('GET', "http://{$serveur}{$port}/toad/rental/all");
+            $allRentals = json_decode($rentalsResponse->getBody()->getContents(), true);
+            $rentals = array_filter($allRentals, function ($rental) use ($customerId) {
+                return (isset($rental['customerId']) && $rental['customerId'] == $customerId)
+                    || (isset($rental['customer_id']) && $rental['customer_id'] == $customerId);
+            });
+            $rentals = array_values($rentals);
+
+            if ($rentals && count($rentals) > 0) {
+                $inventoryIds = array_column($rentals, 'inventoryId');
+                foreach ($inventoryIds as $inventoryId) {
+                    $inventoryResponse = $client->request('GET', "http://{$serveur}{$port}/toad/inventory/getById?id={$inventoryId}");
+                    $inventory = json_decode($inventoryResponse->getBody()->getContents(), true);
+                    if ($inventory && isset($inventory['filmId'])) {
+                        $filmResponse = $client->request('GET', "http://{$serveur}{$port}/toad/film/getById?id={$inventory['filmId']}");
+                        $film = json_decode($filmResponse->getBody()->getContents(), true);
+                        $films[$inventoryId] = $film;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return view('customer-rentals', [
+                'customers' => $customers,
+                'error' => 'Erreur lors de la récupération des locations : ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    return view('customer-rentals', [
+        'customers' => $customers,
+        'rentals' => $rentals,
+        'films' => $films,
+        'selectedCustomerId' => $customerId
+    ]);
+}
 
 }
